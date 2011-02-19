@@ -319,6 +319,22 @@ class OpenStackShell(object):
         image = self._find_image(args.image)
         image.delete()
 
+    def do_key_list(self, args):
+        """Print a list of available keys to boot from."""
+        print_list(self.cs.keys.list(), ['ID', 'Name', 'Fingerprint'])
+
+    @arg('name', metavar='<name>', help='Name for the new key.')
+    def do_key_create(self, args):
+        """Create a new key."""
+        key = self.cs.keys.create(args.name)
+        print_dict(key._info)
+
+    @arg('name', metavar='<key>', help='Name or ID of key.')
+    def do_key_delete(self, args):
+        """Delete a key."""
+        key = self._find_key(args.name)
+        key.delete()
+
     @arg('server', metavar='<server>', help='Name or ID of server.')
     @arg('group', metavar='<group>', help='Name or ID of group.')
     @arg('address', metavar='<address>', help='IP address to share.')
@@ -550,6 +566,10 @@ class OpenStackShell(object):
     def _find_image(self, image):
         """Get an image by name or ID."""
         return self._find_resource(self.cs.images, image)
+
+    def _find_key(self, keyspec):
+        """Get a key by name or ID."""
+        return self._find_resource(self.cs.keys, keyspec)
 
     def _find_flavor(self, flavor):
         """Get a flavor by name, ID, or RAM size."""

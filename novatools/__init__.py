@@ -18,6 +18,7 @@ from novatools.exceptions import (OpenStackException, BadRequest,
 from novatools.flavors import FlavorManager, Flavor
 from novatools.images import ImageManager, Image
 from novatools.ipgroups import IPGroupManager, IPGroup
+from novatools.keys import KeyManager, Key
 from novatools.servers import (ServerManager, Server, REBOOT_HARD,
                                  REBOOT_SOFT)
 from novatools.zones import Zone, ZoneManager
@@ -48,6 +49,7 @@ class OpenStack(object):
         self.flavors = FlavorManager(self)
         self.images = ImageManager(self)
         self.ipgroups = IPGroupManager(self)
+        self.keys = KeyManager(self)
         self.servers = ServerManager(self)
         self.zones = ZoneManager(self)
 
