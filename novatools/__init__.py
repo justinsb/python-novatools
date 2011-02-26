@@ -21,6 +21,7 @@ from novatools.ipgroups import IPGroupManager, IPGroup
 from novatools.keys import KeyManager, Key
 from novatools.servers import (ServerManager, Server, REBOOT_HARD,
                                  REBOOT_SOFT)
+from novatools.volumes import VolumeManager, Volume
 from novatools.zones import Zone, ZoneManager
 
 
@@ -51,6 +52,7 @@ class OpenStack(object):
         self.ipgroups = IPGroupManager(self)
         self.keys = KeyManager(self)
         self.servers = ServerManager(self)
+        self.volumes = VolumeManager(self)
         self.zones = ZoneManager(self)
 
     def authenticate(self):

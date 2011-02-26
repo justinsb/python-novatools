@@ -555,6 +555,29 @@ class OpenStackShell(object):
         print_list(self.cs.zones.list(), ['ID', 'Name', 'Is Active',
                                             'Capabilities', 'API URL'])
 
+    def do_volume_list(self, args):
+        """Print a list of available volumes."""
+        print_list(self.cs.volumes.list(), ['ID', 'Name', 'Status', 'Size',
+                'AvailabilityZone', 'Attachments'])
+
+    @arg('name', metavar='<volume>', help='Name or ID of volume.')
+    def do_volume_info(self, args):
+        """Get detailed information about a volume"""
+        volume = self._find_volume(args.name)
+        print_dict(volume._info)
+
+    @arg('size', metavar='<size>', help='Size in GB of the new volume.')
+    def do_volume_create(self, args):
+        """Create a new volume."""
+        volume = self.cs.volumes.create(args.size)
+        print_dict(volume._info)
+
+    @arg('name', metavar='<volume>', help='Name or ID of volume.')
+    def do_volume_delete(self, args):
+        """Delete a volume."""
+        volume = self._find_volume(args.name)
+        volume.delete()
+
     def _find_server(self, server):
         """Get a server by name or ID."""
         return self._find_resource(self.cs.servers, server)
@@ -570,6 +593,10 @@ class OpenStackShell(object):
     def _find_key(self, keyspec):
         """Get a key by name or ID."""
         return self._find_resource(self.cs.keys, keyspec)
+
+    def _find_volume(self, volumespec):
+        """Get a volume by name or ID."""
+        return self._find_resource(self.cs.volumes, volumespec)
 
     def _find_flavor(self, flavor):
         """Get a flavor by name, ID, or RAM size."""
